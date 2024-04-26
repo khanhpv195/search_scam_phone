@@ -51,7 +51,7 @@ class PhoneClientController extends Controller
             ]);
         }
 
-        return view('welcome', compact('phoneNumbers')); // Ensure this is the correct view name
+        return view('client.index', compact('phoneNumbers')); // Ensure this is the correct view name
     }
 
 
