@@ -1,0 +1,76 @@
+.header
+{
+    background-color: #00bcd4 !important;
+}
+
+.header li a:hover, .header li a
+{
+    color: white !important;
+}
+
+footer
+{
+    background-color: #001215 !important;
+    color: #bcb7b7 !important;
+}
+
+footer a
+{
+    color: #bcb7b7 !important;
+}
+
+.standard-header {
+    font-size: 24px; /* Đặt kích thước chữ là 24px */
+    text-align: center; /* Căn giữa tiêu đề */
+    padding: 10px 0; /* Padding trên và dưới để tạo khoảng không */
+    font-weight: bold;
+}
+.bg_add
+{
+    background-color:#00bcd4 !important;
+    border-color: #00bcd4 !important;
+    color: #ffffff !important;
+}
+
+/* Tùy chỉnh navbar để menu hiển thị đẹp hơn ở các kích thước màn hình khác nhau */
+.navbar-nav {
+    flex-direction: row;
+}
+
+.nav-item {
+    margin-left: 20px; /* Tạo khoảng cách giữa các item */
+    font-weight: bold;
+}
+
+@media (max-width: 991px) {
+    .navbar-nav {
+        flex-direction: column; /* Điều chỉnh menu cho màn hình nhỏ */
+        margin-top: 10px;
+    }
+
+    .nav-item {
+        margin-left: 0; /* Gỡ bỏ khoảng cách bên trái cho màn hình nhỏ */
+    }
+}
+.header li a:hover
+{
+    color: #f44c35 !important;
+}
+html, body {
+    height: 100%;  /* Allow the page to expand to the full viewport height */
+    margin: 0;     /* Reset default margins */
+}
+
+#main-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Viewport Height: Ensure it fills at least the entire height of the viewport */
+}
+
+.content {
+    flex: 1; /* Flex-grow to take available space */
+}
+
+footer {
+    width: 100%;
+}
