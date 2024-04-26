@@ -45,14 +45,16 @@ class PhoneClientController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(12);
 
+        // Check if the request is an AJAX request
         if ($request->ajax()) {
             return response()->json([
-                'html' => view('client.partials.phone_numbers', compact('phoneNumbers'))->render(),
+                'phoneNumbers' => $phoneNumbers
             ]);
         }
 
-        return view('client.index', compact('phoneNumbers')); // Ensure this is the correct view name
+        return view('client.index', compact('phoneNumbers'));
     }
+
 
 
     // show

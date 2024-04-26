@@ -94,26 +94,116 @@
 
 @push('scripts')
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script>
         $(document).ready(function () {
-            $('#search-form').on('submit', function (e) {
-                e.preventDefault(); // Prevent the form from submitting via the browser.
-                var query = $('#search-input').val();
+            var searchDelay;
+            $('#search-input').on('input', function () {
+                var query = $(this).val().trim();
 
+                // Clear any existing timeout to reset the timer
+                clearTimeout(searchDelay);
+
+                searchDelay = setTimeout(function () {
+                    // Check the length of the query
+                    if (query.length >= 3) {
+                        $.ajax({
+                            url: "{{ route('search') }}",
+                            method: 'GET',
+                            data: { query: query },
+                            success: function (response) {
+                                updatePhoneNumberList(response.phoneNumbers);
+                            },
+                            error: function (xhr, status, error) {
+                                console.error("Error occurred:", xhr, status, error);
+                            }
+                        });
+                    } else if (query.length === 0) {
+                        // Load the initial state or all phone numbers when the query is cleared
+                        loadAllPhoneNumbers();
+                    } else {
+                        // If the query length is less than 3 and not empty, clear results
+                        $('.results-list').html('<p>Type at least 3 characters to search phone numbers.</p>');
+                    }
+                }, 500); // 500 milliseconds delay
+            });
+
+            function loadAllPhoneNumbers() {
                 $.ajax({
-                    url: "{{ route('search') }}",
-                    method: 'GET',
-                    data: {query: query},
-                    success: function (data) {
-                        $('.results-list').html(data.html);
+                    url: "{{ route('search') }}", // You might need a different endpoint to fetch all
+                    success: function (response) {
+                        updatePhoneNumberList(response.phoneNumbers);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error fetching all phone numbers:", xhr, status, error);
                     }
                 });
-            });
+            }
 
-            $('#search-input').on('keyup', function () {
-                $(this).closest('form').submit(); // Trigger search when typing.
-            });
+            function updatePhoneNumberList(phoneNumbers) {
+                $('.results-list').empty();
+                if (phoneNumbers.data.length > 0) {
+                    let contentHtml = '<div class="container mt-3">';
+                    let chunks = chunkArray(phoneNumbers.data, 3);
+                    chunks.forEach(function(chunk) {
+                        contentHtml += '<div class="row g-3 mb-4">';
+                        chunk.forEach(function(phoneNumber) {
+                            contentHtml += `
+                            <div class="col-md-4">
+                                <div class="card h-100">
+                                    <a href="/phones/${phoneNumber.id}" class="stretched-link"></a>
+                                    <div class="card-header">
+                                        <h5 class="mb-0 d-flex justify-content-between align-items-center">
+                                            ${phoneNumber.phone_number}
+                                            ${phoneNumber.reviews && phoneNumber.reviews.length > 0 ?
+                                `<small class="text-muted">${new Date(phoneNumber.reviews[0].created_at).toISOString().slice(0, 10)}</small>` : ''}
+                                        </h5>
+                                    </div>
+                                    <div class="card-body">
+                                        ${phoneNumber.reviews && phoneNumber.reviews.length > 0 ?
+                                `<p><i class="fa fa-comment"></i> ${phoneNumber.reviews[0].comment.substring(0, 100)}</p>
+                                             <p>${statusBadge(phoneNumber.reviews[0].rating)}</p>` :
+                                `<p>No reviews yet.</p>`}
+                                    </div>
+                                </div>
+                            </div>`;
+                        });
+                        contentHtml += '</div>'; // End row
+                    });
+                    contentHtml += '</div>'; // End container
+                    $('.results-list').html(contentHtml);
+                } else {
+                    $('.results-list').html('<div class="alert alert-info" role="alert">No phone numbers found.</div>');
+                }
+            }
+
+            function chunkArray(array, size) {
+                const chunked_arr = [];
+                for (let i = 0; i < array.length; i++) {
+                    const last = chunked_arr[chunked_arr.length - 1];
+                    if (!last || last.length === size) {
+                        chunked_arr.push([array[i]]);
+                    } else {
+                        last.push(array[i]);
+                    }
+                }
+                return chunked_arr;
+            }
+
+            function statusBadge(rating) {
+                let badgeHtml = '<span class="badge ';
+                switch(rating.toLowerCase()) {
+                    case 'spam': badgeHtml += 'bg-danger'; break;
+                    case 'scam': badgeHtml += 'bg-warning'; break;
+                    case 'positive': badgeHtml += 'bg-success'; break;
+                    case 'uncertain': badgeHtml += 'bg-secondary'; break;
+                    default: badgeHtml += 'bg-secondary'; break;
+                }
+                badgeHtml += `">${rating}</span>`;
+                return badgeHtml;
+            }
         });
     </script>
+
 @endpush
+
+
