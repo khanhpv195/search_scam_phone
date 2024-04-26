@@ -46,13 +46,9 @@ class PhoneClientController extends Controller
             ->paginate(12);
 
         // Check if the request is an AJAX request
-        if ($request->ajax()) {
-            return response()->json([
-                'phoneNumbers' => $phoneNumbers
-            ]);
-        }
-
-        return view('client.index', compact('phoneNumbers'));
+        return response()->json([
+            'phoneNumbers' => $phoneNumbers
+        ]);
     }
 
 
