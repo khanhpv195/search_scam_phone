@@ -12,8 +12,8 @@ class Phone extends Model
     protected $fillable = [
         'business_name',
         'phone_number',
-        'additional_info',
-        'status'
+        'tag',
+        'is_beauty'
     ];
 
 

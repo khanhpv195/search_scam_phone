@@ -105,7 +105,7 @@
 
                 searchDelay = setTimeout(function () {
                     // Check the length of the query
-                    if (query.length >= 3) {
+                    if (query.length >= 2) {
                         $.ajax({
                             url: "{{ route('search') }}",
                             method: 'GET',

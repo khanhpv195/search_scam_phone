@@ -7,9 +7,19 @@ use App\Models\Phone;
 use App\Models\Review;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Helpers\Helper as Helper;
+
 class PhoneClientController extends Controller
 {
     // Method to display a list of phone numbers
+
+    // contructor
+    public function __construct()
+    {
+        // bind helper
+        $this->helper = new Helper();
+    }
+
     public function index(Request $request)
     {
         // Eager load reviews when listing all phone numbers, fetching only the most recent review
@@ -52,7 +62,6 @@ class PhoneClientController extends Controller
     }
 
 
-
     // show
     public function show($id)
     {
@@ -66,19 +75,26 @@ class PhoneClientController extends Controller
     }
 
 
-    public
-    function store(Request $request)
+    public function store(Request $request)
     {
 
         $request->validate([
             'phone_number' => 'required',
         ]);
 
-        return DB::transaction(function () use ($request) {
+        // Check if DBVthe phone number is beautiful
+        DB::beginTransaction();
+        try {
             // Check if the phone number already exists
+            $tag = $this->helper->determinePhoneType($request->input('phone_number'));
+            $beautiful = $this->helper->isBeautifulPhoneNumber($request->input('phone_number'));
             $phone = Phone::firstOrCreate(
-                ['phone_number' => $request->input('phone_number')],
-                ['business_name' => $request->input('business_name')]
+                ['phone_number' => $request->input('phone_number')], // Search attributes
+                [
+                    'business_name' => $request->input('business_name'), // Additional attributes for creation
+                    'tag' => $tag,
+                    'is_beauty' => $beautiful
+                ]
             );
 
             // Save to review table
@@ -87,7 +103,12 @@ class PhoneClientController extends Controller
                 'rating' => $request->input('rating'),
                 'ip_address' => $request->ip()
             ]);
-            return redirect()->back()->with('success', 'Thank you for your feedback!');
-        });
+            DB::commit();
+            return redirect()->back()->with('success', 'Cảm ơn bạn đã gửi số !');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Có lỗi xảy ra, xin vui lòng thử lại sau.');
+        }
+
     }
 }

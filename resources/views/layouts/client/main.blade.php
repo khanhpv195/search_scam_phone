@@ -25,10 +25,10 @@
                             <a class="nav-link" href="/">Trang Chủ</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Về chúng tôi</a>
+                            <a class="nav-link" href="/about-us">Về chúng tôi</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Liên Hệ</a>
+                            <a class="nav-link" href="/contact">Liên Hệ</a>
                         </li>
                     </ul>
                 </div>

@@ -28,3 +28,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
 Route::get('/', [\App\Http\Controllers\Client\PhoneClientController::class, 'index']);
 Route::resource('/phones', \App\Http\Controllers\Client\PhoneClientController::class);
 Route::get('/search', [PhoneClientController::class, 'search'])->name('search');
+
+
+Route::get('/about-us', function () {
+    return view('client.about-us');
+});
+Route::get('/contact', function () {
+    return view('client.contact');
+});
