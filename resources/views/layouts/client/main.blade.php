@@ -34,7 +34,9 @@
                 </div>
             </nav>
         </div>
+
     </header>
+
     <div class="content">
         @yield('content')
     </div>
@@ -60,16 +62,22 @@
 
                 <!-- Column 2: Logo -->
                 <div class="col-md-4 d-flex justify-content-center align-items-center">
-                    <img src="https://via.placeholder.com/100x50?text=Logo+BCT" alt="Logo Bộ Công Thương" class="logo">
+                    <img src="https://via.placeholder.com/100x50?text=Logo" alt="Logo" class="logo">
                 </div>
             </div>
         </div>
+        <div class="zalo-chat-widget" data-oaid="579745863508352884" data-welcome-message="Rất vui khi được hỗ trợ bạn!" data-autopopup="0" data-width="300" data-height="300"> </div>
+
+        <script src="https://sp.zalo.me/plugins/sdk.js"> </script>
+
     </footer>
 </div>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
+
 @stack('scripts')
 </body>
 </html>
