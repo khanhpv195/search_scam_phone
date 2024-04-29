@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Phone;
+use App\Models\Review;
 use Illuminate\Http\Request;
 
 class PhoneAdminController extends Controller
@@ -42,6 +43,22 @@ class PhoneAdminController extends Controller
 
     public function show($id)
     {
-        return view('admin.phones.show', compact('id'));
+
+        // get phone by id, join width reviews, order review by created_at
+        $phoneNumber = Phone::where('id', $id)->with(['reviews' => function ($query) {
+            $query->orderBy('created_at', 'desc');
+        }])->first();
+
+        return view('admin.phones.show', compact('phoneNumber'));
+    }
+
+
+    // remove review
+
+    public function destroyReview($reviewId)
+    {
+        $reviewId = Review::find($reviewId);
+        $reviewId->delete();
+        return redirect()->back()->with('success', 'Đã xóa');
     }
 }

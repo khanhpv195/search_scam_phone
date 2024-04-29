@@ -56,7 +56,7 @@
                     <ul class="list-unstyled">
                         <li><a href="/terms-of-use" class="text-decoration-none">Điều khoản sử dụng</a></li>
                         <li><a href="/privacy-policy" class="text-decoration-none">Chính sách bảo mật</a></li>
-                        <li><a href="/privacy-policy" class="text-decoration-none">Về chúng tôi</a></li>
+                        <li><a href="/about-us" class="text-decoration-none">Về chúng tôi</a></li>
                     </ul>
                 </div>
 

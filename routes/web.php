@@ -22,6 +22,8 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
     Route::get('/', [\App\Http\Controllers\Admin\AdminController::class, 'index'])->name('admin.dashboard');
     Route::resource('phones', \App\Http\Controllers\Admin\PhoneAdminController::class);
+    Route::delete('/destroyReview/{reviewId}', [\App\Http\Controllers\Admin\PhoneAdminController::class, 'destroyReview'])->name('destroyReview');
+
 });
 
 
@@ -35,4 +37,12 @@ Route::get('/about-us', function () {
 });
 Route::get('/contact', function () {
     return view('client.contact');
+});
+
+Route::get('/terms-of-use', function () {
+    return view('client.terms-of-use');
+});
+
+Route::get('/privacy-policy', function () {
+    return view('client.terms-of-use');
 });

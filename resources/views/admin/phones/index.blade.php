@@ -33,7 +33,7 @@
                 <td>{{$phone->phone_number}}</td>
                 <td>{{$phone->tag}}</td>
                 <td>{{$phone->is_beauty ? 'Có' : 'Không'}}</td>
-                <td>
+                <td class="">
                     <a href="/admin/phones/{{$phone->id}}" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a>
                     <!-- Delete button as a form -->
                     <form action="/admin/phones/{{$phone->id}}" method="POST" onsubmit="return confirm('Are you sure you want to delete this phone?');" style="display: inline-block;">
